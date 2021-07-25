@@ -1,4 +1,6 @@
 const getState = ({ getStore, getActions, setStore }) => {
+	const urlPeople = "https://www.swapi.tech/api/people/";
+	const urlPlanets = "https://www.swapi.tech/api/planets/";
 	return {
 		store: {
 			demo: [
@@ -12,34 +14,59 @@ const getState = ({ getStore, getActions, setStore }) => {
 					background: "white",
 					initial: "white"
 				}
-			]
+			],
+			people: [],
+			planets: [],
+			favorites: []
 		},
 		actions: {
-			// Use getActions to call a function within a fuction
-			exampleFunction: () => {
-				getActions().changeColor(0, "green");
+			getPeople: () => {
+				fetch(urlPeople)
+					.then(respuesta => respuesta.json())
+					.then(data => {
+						setStore({ people: data.results });
+					});
 			},
-			loadSomeData: () => {
-				/**
-					fetch().then().then(data => setStore({ "foo": data.bar }))
-				*/
+
+			getPlanets: () => {
+				fetch(urlPlanets)
+					.then(respuesta => respuesta.json())
+					.then(data => {
+						setStore({ planets: data.results });
+					});
 			},
-			changeColor: (index, color) => {
-				//get the store
-				const store = getStore();
 
-				//we have to loop the entire demo array to look for the respective index
-				//and change its color
-				const demo = store.demo.map((elm, i) => {
-					if (i === index) elm.background = color;
-					return elm;
-				});
+			setFavorites: favorite => {
+				if (!getStore().favorites.includes(favorite)) {
+					setStore({ favorites: [...getStore().favorites, favorite] });
+				} else {
+					const array = getStore().favorites;
+					const condition = currentFavorite => currentFavorite === favorite;
+					let index = array.findIndex(condition);
+					if (index > -1) getActions().removeFavorite(index);
+				}
+			},
 
-				//reset the global store
-				setStore({ demo: demo });
+			removeFavorite: favoriteIndex => {
+				getStore().favorites.splice(favoriteIndex, 1);
+				setStore({ favorites: getStore().favorites });
 			}
 		}
 	};
 };
 
 export default getState;
+
+const urlBaseSWAPI = "https://www.swapi.tech/api/";
+
+// fetchGetInfo : async (param) => {
+//   let response = await fetch(`${urlBaseSWAPI}${param}`);
+//   let data = await response.json();
+//   let allInfo = [...data.results];
+//   while (data.next !== null) {
+//     response = await fetch(data.next);
+//     data = await response.json();
+//     allInfo.push(...data.results);
+//   }
+//   setStore({"el parametro" : allInfo})
+// };
