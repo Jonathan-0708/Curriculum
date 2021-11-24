@@ -1,120 +1,102 @@
 /* eslint-disable no-console */
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
-import { withStyles, makeStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-import { yellow, grey, blue } from "@material-ui/core/colors";
+import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
+import ButtonBase from "@material-ui/core/ButtonBase";
 import { Context } from "../store/appContext";
+import PropTypes from "prop-types";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 
-const ColorButton = withStyles(theme => ({
+const useStyles = makeStyles(theme => ({
 	root: {
-		color: theme.palette.getContrastText(yellow[500]),
-		backgroundColor: grey[50],
-		"&:hover": {
-			backgroundColor: yellow[700]
-		},
-		border: `1px solid ${yellow[700]}`
+		flexGrow: 1
+	},
+	paper: {
+		padding: theme.spacing(2),
+		margin: "auto",
+		maxWidth: 1500
+	},
+	image: {
+		width: "100%",
+		height: "100%"
+	},
+	img: {
+		margin: "auto",
+		display: "block",
+		maxWidth: "100%",
+		maxHeight: "100%"
 	}
-}))(Button);
-
-const ColorButton1 = withStyles(theme => ({
-	root: {
-		color: theme.palette.getContrastText(yellow[500]),
-		backgroundColor: grey[50],
-		"&:hover": {
-			backgroundColor: blue[700]
-		},
-		border: `1px solid ${blue[700]}`
-	}
-}))(Button);
-
-const useStyles = makeStyles({
-	root: {
-		maxWidth: 345,
-		minWidth: 345
-	}
-});
+}));
 
 const Cards = props => {
-	const { element, image, isPeople } = props;
+	const { titulo } = props;
 	const classes = useStyles();
 	const { store, actions } = useContext(Context);
-
-	const addToFavorites = favorite => {
-		actions.setFavorites(favorite);
-	};
-
-	const includeElementInFavorites = currentElement => {
-		return store.favorites.includes(currentElement);
-	};
 
 	return (
 		<>
 			<div>
-				<Card className={classes.root}>
-					<CardActionArea>
-						<CardMedia component="img" alt="" height="140" image={image} title="" />
-						<CardContent>
-							<Typography gutterBottom variant="h5" component="h2">
-								{element.name}
-							</Typography>
-							<Typography variant="body2" color="textSecondary" component="p">
-								Description
-							</Typography>
-						</CardContent>
-					</CardActionArea>
-					<CardActions>
-						<Grid container spacing={4}>
-							<Grid container item xs={8}>
-								<Link
-									to={
-										isPeople
-											? `/persons-details?uid=${element.uid}`
-											: `/planets-details?uid=${element.uid}`
-									}>
-									<ColorButton1 variant="contained" color="primary" className={classes.margin}>
-										Learn more!
-									</ColorButton1>
-								</Link>
-							</Grid>
-							<Grid container item xs={4}>
-								<ColorButton
-									variant="contained"
-									color="primary"
-									className={classes.margin}
-									onClick={() => addToFavorites(element)}>
-									{
-										<i
-											className={
-												includeElementInFavorites(element) ? "fas fa-heart" : "far fa-heart p-1"
-											}></i>
-									}
-								</ColorButton>
+				<Paper className={classes.paper}>
+					<Grid container spacing={2}>
+						<Grid item>
+							<ButtonBase className={classes.image}>
+								<img
+									className={classes.img}
+									alt="complex"
+									src="https://i.postimg.cc/k4FGpKw7/IMG-20210329-120239628-PORTRAIT.jpg"
+								/>
+							</ButtonBase>
+						</Grid>
+						<Grid item xs={12} sm container>
+							<Grid item xs container direction="column" spacing={2}>
+								<Grid item xs>
+									<h2 className="letra-negra ">{titulo}</h2>
+									<Typography variant="subtitle1">
+										Estudiante de Ingeniería Geológica Universidad de Los Andes
+									</Typography>
+
+									<Typography variant="subtitle1">
+										Consejero Estudiantil Escuela de Ingeniería Geológica ULA
+									</Typography>
+									<Typography variant="subtitle1">Presidente Capítulo AAPG ULA</Typography>
+									<Typography variant="subtitle1">Desarrollador Full Stack </Typography>
+									<Typography variant="subtitle1" className="p-3">
+										<i className="fas fa-birthday-cake icono p-2"></i>
+										<i className="fas icono">07/08/1996</i>
+									</Typography>
+									<Typography variant="subtitle1" className="p-3">
+										<i className="fas fa-mobile-alt icono p-2"></i>
+										<i className="fas icono">0414-730-6638</i>
+									</Typography>
+									<Typography variant="subtitle1" className="p-3">
+										<i className="fas fa-envelope icono p-2"></i>
+										<i className="fas icono">jonathandc0708@gmail.com</i>
+									</Typography>
+									<Typography variant="subtitle1" className="p-3">
+										<a href="https://www.linkedin.com/in/jonathan-diaz-c-a66255159/" className="a">
+											<i className="fab fa-linkedin icono p-2"></i>
+											<i className="fas icono">Jonathan Diaz C</i>
+										</a>
+									</Typography>
+									<Typography variant="subtitle1" className="p-3">
+										<a href="https://www.instagram.com/jojodiazc/" className="a">
+											<i className="fab fa-instagram icono p-2"></i>
+											<i className="fas icono">Jojodiazc</i>
+										</a>
+									</Typography>
+								</Grid>
 							</Grid>
 						</Grid>
-					</CardActions>
-				</Card>
+					</Grid>
+				</Paper>
 			</div>
 		</>
 	);
 };
-
-Cards.defaultProps = {
-	isPeople: false
-};
-
 Cards.propTypes = {
-	element: PropTypes.object,
 	image: PropTypes.string,
-	isPeople: PropTypes.bool
+	titulo: PropTypes.string
 };
-
 export default Cards;

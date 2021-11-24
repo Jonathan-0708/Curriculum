@@ -56,17 +56,3 @@ const getState = ({ getStore, getActions, setStore }) => {
 };
 
 export default getState;
-
-const urlBaseSWAPI = "https://www.swapi.tech/api/";
-
-// fetchGetInfo : async (param) => {
-//   let response = await fetch(`${urlBaseSWAPI}${param}`);
-//   let data = await response.json();
-//   let allInfo = [...data.results];
-//   while (data.next !== null) {
-//     response = await fetch(data.next);
-//     data = await response.json();
-//     allInfo.push(...data.results);
-//   }
-//   setStore({"el parametro" : allInfo})
-// };
